@@ -1,12 +1,12 @@
-package mmauro.siopeDownloader.datastruct.operazioni;
+package org.github.mmauro94.siopeDownloader.datastruct.operazioni;
 
 import lombok.Getter;
-import mmauro.siopeDownloader.datastruct.anagrafiche.Anagrafiche;
-import mmauro.siopeDownloader.datastruct.anagrafiche.CodiceGestionale;
-import mmauro.siopeDownloader.datastruct.anagrafiche.Ente;
-import mmauro.siopeDownloader.download.SiopeZipDownloader;
-import mmauro.siopeDownloader.utils.ParseUtils;
-import mmauro.siopeDownloader.utils.URLUtils;
+import org.github.mmauro94.siopeDownloader.datastruct.anagrafiche.Anagrafiche;
+import org.github.mmauro94.siopeDownloader.datastruct.anagrafiche.CodiceGestionale;
+import org.github.mmauro94.siopeDownloader.datastruct.anagrafiche.Ente;
+import org.github.mmauro94.siopeDownloader.download.SiopeZipDownloader;
+import org.github.mmauro94.siopeDownloader.utils.ParseUtils;
+import org.github.mmauro94.siopeDownloader.utils.URLUtils;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.NotNull;

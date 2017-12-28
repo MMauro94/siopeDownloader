@@ -1,8 +1,8 @@
-package mmauro.siopeDownloader.datastruct.operazioni;
+package org.github.mmauro94.siopeDownloader.datastruct.operazioni;
 
-import mmauro.siopeDownloader.datastruct.anagrafiche.Anagrafiche;
-import mmauro.siopeDownloader.datastruct.anagrafiche.CodiceGestionaleEntrate;
-import mmauro.siopeDownloader.datastruct.anagrafiche.Ente;
+import org.github.mmauro94.siopeDownloader.datastruct.anagrafiche.Anagrafiche;
+import org.github.mmauro94.siopeDownloader.datastruct.anagrafiche.CodiceGestionaleEntrate;
+import org.github.mmauro94.siopeDownloader.datastruct.anagrafiche.Ente;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;

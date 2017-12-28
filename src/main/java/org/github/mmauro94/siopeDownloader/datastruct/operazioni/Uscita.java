@@ -1,19 +1,13 @@
-package mmauro.siopeDownloader.datastruct.operazioni;
+package org.github.mmauro94.siopeDownloader.datastruct.operazioni;
 
-import mmauro.siopeDownloader.datastruct.anagrafiche.Anagrafiche;
-import mmauro.siopeDownloader.datastruct.anagrafiche.CodiceGestionaleUscite;
-import mmauro.siopeDownloader.datastruct.anagrafiche.Ente;
-import mmauro.siopeDownloader.datastruct.anagrafiche.Provincia;
+import org.github.mmauro94.siopeDownloader.datastruct.anagrafiche.Anagrafiche;
+import org.github.mmauro94.siopeDownloader.datastruct.anagrafiche.CodiceGestionaleUscite;
+import org.github.mmauro94.siopeDownloader.datastruct.anagrafiche.Ente;
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 public final class Uscita extends Operazione<CodiceGestionaleUscite> {
 
