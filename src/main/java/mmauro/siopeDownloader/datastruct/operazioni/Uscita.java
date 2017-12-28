@@ -32,26 +32,4 @@ public final class Uscita extends Operazione<CodiceGestionaleUscite> {
 	public static Iterable<Uscita> downloadUscite(int year, @NotNull Anagrafiche anagrafiche) throws IOException {
 		return download(year, anagrafiche, "SIOPE_USCITE", CREATOR);
 	}
-
-	public static void main(String[] args) throws IOException {
-		//Download anagrafiche
-		final Anagrafiche a = Anagrafiche.downloadAnagrafiche();
-
-		//Download uscite e raggruppamento per provincia
-		final Map<Provincia, BigDecimal> map = new HashMap<>();
-		for (Uscita u : Uscita.downloadUscite(2017, a)) {
-			final Provincia p = u.getEnte().getComune().getProvincia();
-			map.put(p, map.getOrDefault(p, BigDecimal.ZERO).add(u.getAmount()));
-		}
-
-		//Ordinamento risultati
-		final ArrayList<Map.Entry<Provincia, BigDecimal>> entries = new ArrayList<>(map.entrySet());
-		Comparator<Map.Entry<Provincia, BigDecimal>> comparing = Comparator.comparing(Map.Entry::getValue);
-		entries.sort(comparing.reversed());
-
-		//Print a schermo risultati
-		for (Map.Entry<Provincia, BigDecimal> entry : entries) {
-			System.out.println(entry.getKey().getNome() + ": " + entry.getValue().toPlainString() + "€");
-		}
-	}
 }
