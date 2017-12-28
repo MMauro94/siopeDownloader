@@ -3,6 +3,7 @@ package mmauro.siopeDownloader.datastruct.anagrafiche;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import mmauro.siopeDownloader.datastruct.AutoMap;
+import mmauro.siopeDownloader.utils.ParseUtils;
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -16,8 +17,6 @@ import java.util.List;
 
 @EqualsAndHashCode(of = {"codice"})
 public class Ente {
-
-    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     public static class Map extends AutoMap<String, Ente> {
 
@@ -36,7 +35,7 @@ public class Ente {
     private final Date dataInclusione;
     @Nullable
     private final Date dataEsclusione;
-    @NotNull
+    @Nullable
     @Getter
     private final String codiceFiscale;
     @NotNull
@@ -51,7 +50,7 @@ public class Ente {
     @Getter
     private final Sottocomparto sottocomparto;
 
-    private Ente(@NotNull String codice, @NotNull Date dataInclusione, @Nullable Date dataEsclusione, @NotNull String codiceFiscale, @NotNull String nome, @NotNull Comune comune, @Nullable Integer numeroAbitanti, @NotNull Sottocomparto sottocomparto) {
+    private Ente(@NotNull String codice, @NotNull Date dataInclusione, @Nullable Date dataEsclusione, @Nullable String codiceFiscale, @NotNull String nome, @NotNull Comune comune, @Nullable Integer numeroAbitanti, @NotNull Sottocomparto sottocomparto) {
         this.codice = codice;
         this.dataInclusione = dataInclusione;
         this.dataEsclusione = dataEsclusione;
@@ -103,21 +102,21 @@ public class Ente {
     }
 
     @NotNull
-    public static Ente parse(@NotNull CSVRecord record, @NotNull Comune.Map comuni, @NotNull Sottocomparto.Map sottocomparti) {
+    public static Ente parse(@NotNull CSVRecord record, @NotNull Comune.Map comuni, @NotNull Provincia.Map provincie, @NotNull Sottocomparto.Map sottocomparti) {
         if (record.size() != 9) {
             throw new IllegalArgumentException("Record size != 9");
         } else {
             String codice = record.get(0);
 
             Date dataInclusione, dataEsclusione;
-            synchronized (DATE_FORMAT) {
+            synchronized (ParseUtils.DATE_FORMAT) {
                 try {
-                    dataInclusione = DATE_FORMAT.parse(record.get(1));
+                    dataInclusione = ParseUtils.DATE_FORMAT.parse(record.get(1));
                 } catch (ParseException e) {
                     throw new IllegalStateException("Illegal inserimento date: " + record.get(1), e);
                 }
                 try {
-                    dataEsclusione = DATE_FORMAT.parse(record.get(2));
+                    dataEsclusione = ParseUtils.DATE_FORMAT.parse(record.get(2));
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(dataEsclusione);
                     if (cal.get(Calendar.YEAR) == 9999 && cal.get(Calendar.MONTH) == Calendar.DECEMBER && cal.get(Calendar.DAY_OF_MONTH) == 31) {
@@ -127,22 +126,23 @@ public class Ente {
                     throw new IllegalStateException("Illegal inserimento date: " + record.get(2), e);
                 }
             }
-            final String codiceFiscale = record.get(3);
+            String codiceFiscale = record.get(3);
+            if(codiceFiscale.trim().isEmpty()) {
+                codiceFiscale = null;
+            }
             final String nome = record.get(4);
-            final Comune comune;
+            final int codComune, codProvincia;
             try {
-                comune = comuni.get(Integer.parseInt(record.get(5)));
+                codComune = Integer.parseInt(record.get(5));
             } catch (NumberFormatException nfe) {
                 throw new IllegalStateException("Invalid codice comune: " + record.get(5), nfe);
             }
             try {
-                final int provincia = Integer.parseInt(record.get(6));
-                if (provincia != comune.getProvincia().getCodice()) {
-                    System.err.println("provincia mismatch: comune " + comune.getNome() + " has provincia " + comune.getProvincia().getNome() + " (" + comune.getProvincia().getCodice() + ") but found " + provincia);
-                }
+                codProvincia = Integer.parseInt(record.get(6));
             } catch (NumberFormatException nfe) {
                 throw new IllegalStateException("Invalid codice provincia: " + record.get(6), nfe);
             }
+            final Comune comune = comuni.get(new Comune.ComuneId(codComune, provincie.get(codProvincia)));
             final Integer numAbitanti;
             try {
                 String str = record.get(7);
@@ -158,8 +158,6 @@ public class Ente {
 
             if (codice == null || codice.trim().isEmpty()) {
                 throw new IllegalArgumentException("Invalid codice: " + codice);
-            } else if (codiceFiscale == null || codiceFiscale.trim().isEmpty()) {
-                throw new IllegalArgumentException("Invalid codiceFiscale: " + codiceFiscale);
             } else if (nome == null || nome.trim().isEmpty()) {
                 throw new IllegalArgumentException("Invalid nome: " + nome);
             }
@@ -169,7 +167,7 @@ public class Ente {
     }
 
     @NotNull
-    public static Ente.Map parseAll(@NotNull List<CSVRecord> records, @NotNull Comune.Map comuni, @NotNull Sottocomparto.Map sottocomparti) {
-        return AutoMap.parse(records, x -> parse(x, comuni, sottocomparti), Ente.Map::new);
+    public static Ente.Map parseAll(@NotNull List<CSVRecord> records, @NotNull Comune.Map comuni, @NotNull Provincia.Map provincie, @NotNull Sottocomparto.Map sottocomparti) {
+        return AutoMap.parse(records, x -> parse(x, comuni, provincie, sottocomparti), Ente.Map::new);
     }
 }

@@ -2,7 +2,7 @@ package mmauro.siopeDownloader.datastruct.anagrafiche;
 
 import lombok.Getter;
 import mmauro.siopeDownloader.download.SiopeZipDownloader;
-import mmauro.siopeDownloader.utils.CSVUtils;
+import mmauro.siopeDownloader.utils.ParseUtils;
 import mmauro.siopeDownloader.utils.ReaderUtils;
 import mmauro.siopeDownloader.utils.URLUtils;
 import org.apache.commons.csv.CSVParser;
@@ -41,8 +41,14 @@ public class Anagrafiche {
     @NotNull
     @Getter
     private final Ente.Map enti;
+    @NotNull
+    @Getter
+    private final CodiceGestionaleEntrate.Map codiciGestionaliEntrate;
+    @NotNull
+    @Getter
+    private final CodiceGestionaleUscite.Map codiciGestionaliUscite;
 
-    private Anagrafiche(@NotNull Comparto.Map comparti, @NotNull Sottocomparto.Map sottocomparti, @NotNull RipartizioneGeografica.Map ripartizioniGeografiche, @NotNull Regione.Map regioni, @NotNull Provincia.Map provincie, @NotNull Comune.Map comuni, @NotNull Ente.Map enti) {
+    private Anagrafiche(@NotNull Comparto.Map comparti, @NotNull Sottocomparto.Map sottocomparti, @NotNull RipartizioneGeografica.Map ripartizioniGeografiche, @NotNull Regione.Map regioni, @NotNull Provincia.Map provincie, @NotNull Comune.Map comuni, @NotNull Ente.Map enti, @NotNull CodiceGestionaleEntrate.Map codiciGestionaliEntrate, @NotNull CodiceGestionaleUscite.Map codiciGestionaliUscite) {
         this.comparti = comparti;
         this.sottocomparti = sottocomparti;
         this.ripartizioniGeografiche = ripartizioniGeografiche;
@@ -50,6 +56,8 @@ public class Anagrafiche {
         this.provincie = provincie;
         this.comuni = comuni;
         this.enti = enti;
+        this.codiciGestionaliEntrate = codiciGestionaliEntrate;
+        this.codiciGestionaliUscite = codiciGestionaliUscite;
     }
 
     @NotNull
@@ -58,9 +66,9 @@ public class Anagrafiche {
         ZipEntry entry;
 
 
-        List<CSVRecord> compartiRecords = null, sottocompartiRecords = null, regProvRecords = null, comuniRecords = null, entiRecords = null;
+        List<CSVRecord> compartiRecords = null, sottocompartiRecords = null, regProvRecords = null, comuniRecords = null, entiRecords = null, codGestEntRecords = null, codGestUscRecords = null;
         while ((entry = download.getNextEntry()) != null) {
-            final List<CSVRecord> records = CSVParser.parse(ReaderUtils.readAll(new InputStreamReader(download)), CSVUtils.CSV_FORMAT).getRecords();
+            final List<CSVRecord> records = CSVParser.parse(ReaderUtils.readAll(new InputStreamReader(download)), ParseUtils.CSV_FORMAT).getRecords();
 
             switch (entry.getName().substring(0, entry.getName().indexOf('.'))) {
                 case "ANAG_COMPARTI":
@@ -80,10 +88,13 @@ public class Anagrafiche {
                     entiRecords = records;
                     break;
                 case "ANAG_CODGEST_ENTRATE":
+                    codGestEntRecords = records;
+                    break;
                 case "ANAG_CODGEST_USCITE":
+                    codGestUscRecords = records;
                     continue;
                 default:
-                    //throw new IllegalStateException("Unexpected file: " + entry.getName());
+                    throw new IllegalStateException("Unexpected file: " + entry.getName());
             }
         }
         if (compartiRecords == null) {
@@ -96,6 +107,10 @@ public class Anagrafiche {
             throw new IllegalStateException("File ANAGRAFE_COMUNI/ANAG_COMUNI not found");
         }else if (entiRecords == null) {
             throw new IllegalStateException("File ANAG_ENTI_SIOPE not found");
+        } else if(codGestEntRecords == null) {
+            throw new IllegalStateException("File ANAG_CODGEST_ENTRATE not found");
+        } else if(codGestUscRecords == null) {
+            throw new IllegalStateException("File ANAG_CODGEST_USCITE not found");
         }
 
         final Comparto.Map comparti = Comparto.parseAll(compartiRecords);
@@ -104,15 +119,10 @@ public class Anagrafiche {
         final Regione.Map regioni = Regione.parseAll(regProvRecords, ripartizioniGeografiche);
         final Provincia.Map provincie = Provincia.parseAll(regProvRecords, regioni);
         final Comune.Map comuni = Comune.parseAll(comuniRecords, provincie);
-        final Ente.Map enti = Ente.parseAll(entiRecords, comuni, sottocomparti);
+        final Ente.Map enti = Ente.parseAll(entiRecords, comuni, provincie, sottocomparti);
+        final CodiceGestionaleEntrate.Map codiciGestionaliEntrate = CodiceGestionaleEntrate.parseAll(codGestEntRecords, comparti);
+        final CodiceGestionaleUscite.Map codiciGestionaliUscite = CodiceGestionaleUscite.parseAll(codGestUscRecords, comparti);
 
-
-        System.out.println();
-
-        return null;
-    }
-
-    public static void main(String[] args) throws IOException {
-        downloadAnagrafiche();
+        return new Anagrafiche(comparti, sottocomparti, ripartizioniGeografiche, regioni, provincie, comuni, enti, codiciGestionaliEntrate, codiciGestionaliUscite);
     }
 }

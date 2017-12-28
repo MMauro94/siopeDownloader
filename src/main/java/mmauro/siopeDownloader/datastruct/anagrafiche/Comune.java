@@ -8,33 +8,50 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@EqualsAndHashCode(of = {"codice"})
+@EqualsAndHashCode(of = {"comuneId"})
 public final class Comune {
 
     public static final String COMUNE_DI = "COMUNE DI ";
 
-    public static final class Map extends AutoMap<Integer, Comune> {
+    public static final class Map extends AutoMap<ComuneId, Comune> {
 
         @NotNull
         @Override
-        protected Integer getKey(@NotNull Comune value) {
-            return value.getCodice();
+        protected ComuneId getKey(@NotNull Comune value) {
+            return value.getComuneId();
+        }
+    }
+
+    @EqualsAndHashCode(of = {"codice", "provincia"})
+    public static class ComuneId {
+        @Getter
+        private final int codice;
+        @Getter
+        @NotNull
+        private final Provincia provincia;
+
+        public ComuneId(int codice, @NotNull Provincia provincia) {
+            this.codice = codice;
+            this.provincia = provincia;
         }
     }
 
     @Getter
-    private final int codice;
+    private final ComuneId comuneId;
+
     @Getter
     @NotNull
     private final String nome;
-    @Getter
-    @NotNull
-    private final Provincia provincia;
 
-    private Comune(int codice, @NotNull String nome, @NotNull Provincia provincia) {
-        this.codice = codice;
+
+    public Comune(ComuneId comuneId, @NotNull String nome) {
+        this.comuneId = comuneId;
         this.nome = nome;
-        this.provincia = provincia;
+    }
+
+    @NotNull
+    public Provincia getProvincia() {
+        return comuneId.getProvincia();
     }
 
     @NotNull
@@ -64,7 +81,7 @@ public final class Comune {
             if (nome.startsWith(COMUNE_DI)) {
                 nome = nome.substring(COMUNE_DI.length(), nome.length());
             }
-            return new Comune(codice, nome.trim(), provincie.get(provincia));
+            return new Comune(new ComuneId(codice, provincie.get(provincia)), nome.trim());
         }
     }
 
