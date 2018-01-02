@@ -4,6 +4,16 @@ Questa libreria consente il download e il parsing dei dati presenti nel sito htt
 ## Nozioni generali
 Nel sito sono presenti entrate e uscite relative ad un certo ente in un certo mese/anno. Per poter parsare questi dati sono però necessari dei dati "anagrafici", che contengono alcune informazioni base (comuni, province, categorie, ecc.).
 
+## Installazione
+È possibile utilizzare questa libreria tramite maven:
+```xml
+<dependency>
+  <groupId>com.github.mmauro94</groupId>
+  <artifactId>siopeDownloader</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
 ## Utilizzo
 
 ### Download anagrafiche

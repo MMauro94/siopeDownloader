@@ -1,4 +1,4 @@
-package org.github.mmauro94.siopeDownloader.datastruct.anagrafiche;
+package com.github.mmauro94.siopeDownloader.datastruct.anagrafiche;
 
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.NotNull;

@@ -1,4 +1,4 @@
-package org.github.mmauro94.siopeDownloader.utils;
+package com.github.mmauro94.siopeDownloader.utils;
 
 import org.apache.commons.csv.CSVFormat;
 

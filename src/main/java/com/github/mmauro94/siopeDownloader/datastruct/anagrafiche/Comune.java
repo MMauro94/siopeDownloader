@@ -1,8 +1,8 @@
-package org.github.mmauro94.siopeDownloader.datastruct.anagrafiche;
+package com.github.mmauro94.siopeDownloader.datastruct.anagrafiche;
 
+import com.github.mmauro94.siopeDownloader.datastruct.AutoMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.github.mmauro94.siopeDownloader.datastruct.AutoMap;
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.NotNull;
 

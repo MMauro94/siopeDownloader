@@ -1,6 +1,6 @@
-package org.github.mmauro94.siopeDownloader.datastruct;
+package com.github.mmauro94.siopeDownloader.datastruct;
 
-import org.github.mmauro94.siopeDownloader.utils.CSVRecordParser;
+import com.github.mmauro94.siopeDownloader.utils.CSVRecordParser;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.NotNull;

@@ -1,10 +1,10 @@
-package org.github.mmauro94.siopeDownloader.datastruct.anagrafiche;
+package com.github.mmauro94.siopeDownloader.datastruct.anagrafiche;
 
+import com.github.mmauro94.siopeDownloader.download.SiopeZipDownloader;
+import com.github.mmauro94.siopeDownloader.utils.ParseUtils;
+import com.github.mmauro94.siopeDownloader.utils.URLUtils;
 import lombok.Getter;
-import org.github.mmauro94.siopeDownloader.download.SiopeZipDownloader;
-import org.github.mmauro94.siopeDownloader.utils.ParseUtils;
-import org.github.mmauro94.siopeDownloader.utils.ReaderUtils;
-import org.github.mmauro94.siopeDownloader.utils.URLUtils;
+import com.github.mmauro94.siopeDownloader.utils.ReaderUtils;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.NotNull;

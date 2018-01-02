@@ -1,4 +1,4 @@
-package org.github.mmauro94.siopeDownloader.download;
+package com.github.mmauro94.siopeDownloader.download;
 
 import org.jetbrains.annotations.NotNull;
 
