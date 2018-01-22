@@ -24,7 +24,7 @@ public final class Comparto {
 	@Getter
 	private final String codice, nome;
 
-	private Comparto(@NotNull String codice, @NotNull String nome) {
+	public Comparto(@NotNull String codice, @NotNull String nome) {
 		this.codice = codice;
 		this.nome = nome;
 	}

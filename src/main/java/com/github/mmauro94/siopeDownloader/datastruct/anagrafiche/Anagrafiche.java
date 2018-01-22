@@ -1,6 +1,7 @@
 package com.github.mmauro94.siopeDownloader.datastruct.anagrafiche;
 
 import com.github.mmauro94.siopeDownloader.download.SiopeZipDownloader;
+import com.github.mmauro94.siopeDownloader.utils.OnProgressListener;
 import com.github.mmauro94.siopeDownloader.utils.ParseUtils;
 import com.github.mmauro94.siopeDownloader.utils.URLUtils;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import com.github.mmauro94.siopeDownloader.utils.ReaderUtils;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -48,7 +50,7 @@ public class Anagrafiche {
 	@Getter
 	private final CodiceGestionaleUscite.Map codiciGestionaliUscite;
 
-	private Anagrafiche(@NotNull Comparto.Map comparti, @NotNull Sottocomparto.Map sottocomparti, @NotNull RipartizioneGeografica.Map ripartizioniGeografiche, @NotNull Regione.Map regioni, @NotNull Provincia.Map provincie, @NotNull Comune.Map comuni, @NotNull Ente.Map enti, @NotNull CodiceGestionaleEntrate.Map codiciGestionaliEntrate, @NotNull CodiceGestionaleUscite.Map codiciGestionaliUscite) {
+	public Anagrafiche(@NotNull Comparto.Map comparti, @NotNull Sottocomparto.Map sottocomparti, @NotNull RipartizioneGeografica.Map ripartizioniGeografiche, @NotNull Regione.Map regioni, @NotNull Provincia.Map provincie, @NotNull Comune.Map comuni, @NotNull Ente.Map enti, @NotNull CodiceGestionaleEntrate.Map codiciGestionaliEntrate, @NotNull CodiceGestionaleUscite.Map codiciGestionaliUscite) {
 		this.comparti = comparti;
 		this.sottocomparti = sottocomparti;
 		this.ripartizioniGeografiche = ripartizioniGeografiche;
@@ -62,9 +64,13 @@ public class Anagrafiche {
 
 	@NotNull
 	public static Anagrafiche downloadAnagrafiche() throws IOException {
-		ZipInputStream download = new SiopeZipDownloader(new URL(URLUtils.SIOPE_WEBSITE + FILE_LOCATION)).download();
-		ZipEntry entry;
+		return downloadAnagrafiche(null);
+	}
 
+	@NotNull
+	public static Anagrafiche downloadAnagrafiche(@Nullable OnProgressListener progressListener) throws IOException {
+		ZipInputStream download = new SiopeZipDownloader(new URL(URLUtils.SIOPE_WEBSITE + FILE_LOCATION), progressListener).download();
+		ZipEntry entry;
 
 		List<CSVRecord> compartiRecords = null, sottocompartiRecords = null, regProvRecords = null, comuniRecords = null, entiRecords = null, codGestEntRecords = null, codGestUscRecords = null;
 		while ((entry = download.getNextEntry()) != null) {

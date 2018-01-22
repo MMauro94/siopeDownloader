@@ -5,11 +5,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @EqualsAndHashCode(of = {"codice"})
-public final class Regione {
+public final class Regione implements GeoItem {
 
 	public static final class Map extends AutoMap<Integer, Regione> {
 
@@ -28,11 +32,17 @@ public final class Regione {
 	@NotNull
 	@Getter
 	private final RipartizioneGeografica ripartizioneGeografica;
+	private final ArrayList<@NotNull Provincia> provincie = new ArrayList<>();
 
-	private Regione(int codice, @NotNull String nome, @NotNull RipartizioneGeografica ripartizioneGeografica) {
+	public Regione(int codice, @NotNull String nome, @NotNull RipartizioneGeografica ripartizioneGeografica) {
 		this.codice = codice;
 		this.nome = nome;
 		this.ripartizioneGeografica = ripartizioneGeografica;
+		ripartizioneGeografica.addRegione(this);
+	}
+
+	void addProvincia(@NotNull Provincia p) {
+		provincie.add(p);
 	}
 
 	@NotNull
@@ -61,5 +71,22 @@ public final class Regione {
 	@NotNull
 	public static Regione.Map parseAll(@NotNull List<CSVRecord> records, @NotNull RipartizioneGeografica.Map ripartizioniGeografiche) {
 		return AutoMap.parse(records, x -> parse(x, ripartizioniGeografiche), Regione.Map::new);
+	}
+
+	@Override
+	@NotNull
+	public RipartizioneGeografica getParent() {
+		return ripartizioneGeografica;
+	}
+
+	@Override
+	@NotNull
+	public Collection<@NotNull Provincia> getChildren() {
+		return getProvincie();
+	}
+
+	@NotNull
+	public List<@NotNull Provincia> getProvincie() {
+		return Collections.unmodifiableList(provincie);
 	}
 }

@@ -13,7 +13,7 @@ public class CodiceGestionaleUscite extends CodiceGestionale {
 
 	}
 
-	protected CodiceGestionaleUscite(@NotNull String codice, @NotNull String nome, @NotNull Comparto comparto, @NotNull Date inizioValidita, @Nullable Date fineValidita) {
+	public CodiceGestionaleUscite(@NotNull String codice, @NotNull String nome, @NotNull Comparto comparto, @NotNull Date inizioValidita, @Nullable Date fineValidita) {
 		super(codice, nome, comparto, inizioValidita, fineValidita);
 	}
 

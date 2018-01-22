@@ -5,11 +5,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @EqualsAndHashCode(of = {"codice"})
-public final class Provincia {
+public final class Provincia implements GeoItem {
 	public static final class Map extends AutoMap<Integer, Provincia> {
 
 		@NotNull
@@ -27,11 +31,17 @@ public final class Provincia {
 	@Getter
 	@NotNull
 	private final Regione regione;
+	private final ArrayList<@NotNull Comune> comuni = new ArrayList<>();
 
-	private Provincia(int codice, @NotNull String nome, @NotNull Regione regione) {
+	public Provincia(int codice, @NotNull String nome, @NotNull Regione regione) {
 		this.codice = codice;
 		this.nome = nome;
 		this.regione = regione;
+		regione.addProvincia(this);
+	}
+
+	void addComune(@NotNull Comune comune) {
+		comuni.add(comune);
 	}
 
 	@NotNull
@@ -65,5 +75,22 @@ public final class Provincia {
 	@NotNull
 	public static Provincia.Map parseAll(@NotNull List<CSVRecord> records, @NotNull Regione.Map regioni) {
 		return AutoMap.parse(records, x -> parse(x, regioni), Provincia.Map::new);
+	}
+
+	@Override
+	@NotNull
+	public Regione getParent() {
+		return regione;
+	}
+
+	@Override
+	@NotNull
+	public Collection<@NotNull Comune> getChildren() {
+		return getComuni();
+	}
+
+	@NotNull
+	public List<@NotNull Comune> getComuni() {
+		return Collections.unmodifiableList(comuni);
 	}
 }

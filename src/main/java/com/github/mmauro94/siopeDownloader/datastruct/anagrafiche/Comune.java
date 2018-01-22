@@ -5,11 +5,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 
 @EqualsAndHashCode(of = {"comuneId"})
-public final class Comune {
+public final class Comune implements GeoItem {
 
 	public static final String COMUNE_DI = "COMUNE DI ";
 
@@ -47,6 +49,7 @@ public final class Comune {
 	public Comune(ComuneId comuneId, @NotNull String nome) {
 		this.comuneId = comuneId;
 		this.nome = nome;
+		comuneId.getProvincia().addComune(this);
 	}
 
 	@NotNull
@@ -88,5 +91,17 @@ public final class Comune {
 	@NotNull
 	public static Comune.Map parseAll(@NotNull List<CSVRecord> records, @NotNull Provincia.Map provincie) {
 		return AutoMap.parse(records, x -> parse(x, provincie), Comune.Map::new);
+	}
+
+	@Override
+	@NotNull
+	public GeoItem getParent() {
+		return getProvincia();
+	}
+
+	@Override
+	@Nullable
+	public Collection<@NotNull ? extends GeoItem> getChildren() {
+		return null;
 	}
 }

@@ -49,7 +49,7 @@ public class Ente {
 	@Getter
 	private final Sottocomparto sottocomparto;
 
-	private Ente(@NotNull String codice, @NotNull Date dataInclusione, @Nullable Date dataEsclusione, @Nullable String codiceFiscale, @NotNull String nome, @NotNull Comune comune, @Nullable Integer numeroAbitanti, @NotNull Sottocomparto sottocomparto) {
+	public Ente(@NotNull String codice, @NotNull Date dataInclusione, @Nullable Date dataEsclusione, @Nullable String codiceFiscale, @NotNull String nome, @NotNull Comune comune, @Nullable Integer numeroAbitanti, @NotNull Sottocomparto sottocomparto) {
 		this.codice = codice;
 		this.dataInclusione = dataInclusione;
 		this.dataEsclusione = dataEsclusione;

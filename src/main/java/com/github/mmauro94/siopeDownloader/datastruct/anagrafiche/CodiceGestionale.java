@@ -47,7 +47,7 @@ public abstract class CodiceGestionale {
 	@Getter
 	private final Date fineValidita;
 
-	protected CodiceGestionale(@NotNull String codice, @NotNull String nome, @NotNull Comparto comparto, @NotNull Date inizioValidita, @Nullable Date fineValidita) {
+	public CodiceGestionale(@NotNull String codice, @NotNull String nome, @NotNull Comparto comparto, @NotNull Date inizioValidita, @Nullable Date fineValidita) {
 		this.codice = codice;
 		this.nome = nome;
 		this.comparto = comparto;

@@ -13,7 +13,7 @@ public class CodiceGestionaleEntrate extends CodiceGestionale {
 
 	}
 
-	protected CodiceGestionaleEntrate(@NotNull String codice, @NotNull String nome, @NotNull Comparto comparto, @NotNull Date inizioValidita, @Nullable Date fineValidita) {
+	public CodiceGestionaleEntrate(@NotNull String codice, @NotNull String nome, @NotNull Comparto comparto, @NotNull Date inizioValidita, @Nullable Date fineValidita) {
 		super(codice, nome, comparto, inizioValidita, fineValidita);
 	}
 

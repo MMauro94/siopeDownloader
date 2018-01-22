@@ -27,7 +27,7 @@ public final class Sottocomparto {
 	@NotNull
 	private final Comparto comparto;
 
-	private Sottocomparto(@NotNull String codice, @NotNull String nome, @NotNull Comparto comparto) {
+	public Sottocomparto(@NotNull String codice, @NotNull String nome, @NotNull Comparto comparto) {
 		this.codice = codice;
 		this.nome = nome;
 		this.comparto = comparto;

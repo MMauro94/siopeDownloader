@@ -1,5 +1,6 @@
 package com.github.mmauro94.siopeDownloader.datastruct.operazioni;
 
+import com.github.mmauro94.siopeDownloader.utils.OnProgressListener;
 import lombok.Getter;
 import com.github.mmauro94.siopeDownloader.datastruct.anagrafiche.Anagrafiche;
 import com.github.mmauro94.siopeDownloader.datastruct.anagrafiche.CodiceGestionale;
@@ -10,6 +11,7 @@ import com.github.mmauro94.siopeDownloader.utils.URLUtils;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -65,8 +67,8 @@ public class Operazione<CG extends CodiceGestionale> {
 	}
 
 	@NotNull
-	public static <CG extends CodiceGestionale, T extends Operazione<CG>> Iterable<T> download(int year, @NotNull Anagrafiche anagrafiche, @NotNull String zipName, @NotNull Creator<CG, T> creator) throws IOException {
-		final ZipInputStream zis = new SiopeZipDownloader(new URL(URLUtils.SIOPE_WEBSITE + "/Siope2Web/documenti/siope2/open/last/" + zipName + "." + year + ".zip")).download();
+	public static <CG extends CodiceGestionale, T extends Operazione<CG>> Iterable<T> download(int year, @NotNull Anagrafiche anagrafiche, @Nullable OnProgressListener onProgressListener, @NotNull String zipName, @NotNull Creator<CG, T> creator) throws IOException {
+		final ZipInputStream zis = new SiopeZipDownloader(new URL(URLUtils.SIOPE_WEBSITE + "/Siope2Web/documenti/siope2/open/last/" + zipName + "." + year + ".zip"), onProgressListener).download();
 		final ZipEntry entry = zis.getNextEntry();
 		if (!entry.getName().endsWith(".csv")) {
 			throw new IllegalStateException("File contained in zip file is not a csv");
