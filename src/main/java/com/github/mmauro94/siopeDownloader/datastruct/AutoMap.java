@@ -76,7 +76,7 @@ public abstract class AutoMap<K, V> implements Collection<V> {
 
 	@Override
 	public boolean add(V v) {
-		if (hasValue(v)) {
+		if (!hasValue(v)) {
 			put(v);
 			return true;
 		} else {

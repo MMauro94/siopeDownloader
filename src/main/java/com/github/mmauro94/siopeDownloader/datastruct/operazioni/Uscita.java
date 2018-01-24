@@ -1,5 +1,6 @@
 package com.github.mmauro94.siopeDownloader.datastruct.operazioni;
 
+import com.github.mmauro94.siopeDownloader.datastruct.anagrafiche.CodiceGestionaleEntrate;
 import com.github.mmauro94.siopeDownloader.utils.OnProgressListener;
 import com.github.mmauro94.siopeDownloader.datastruct.anagrafiche.Anagrafiche;
 import com.github.mmauro94.siopeDownloader.datastruct.anagrafiche.CodiceGestionaleUscite;
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 
 public final class Uscita extends Operazione<CodiceGestionaleUscite> {
 
-	private Uscita(@NotNull Ente ente, int year, int month, @NotNull CodiceGestionaleUscite codiceGestionale, @NotNull BigDecimal amount) {
+	private Uscita(@NotNull Ente ente, int year, int month, @NotNull CodiceGestionaleUscite codiceGestionale, long amount) {
 		super(ente, year, month, codiceGestionale, amount);
 	}
 
@@ -24,8 +25,16 @@ public final class Uscita extends Operazione<CodiceGestionaleUscite> {
 		return Operazione.parse(record, anagrafiche, CREATOR);
 	}
 
-	@NotNull
-	public static Iterable<Uscita> downloadUscite(int year, @NotNull Anagrafiche anagrafiche, @Nullable OnProgressListener onProgressListener) throws IOException {
-		return download(year, anagrafiche, onProgressListener, "SIOPE_USCITE", CREATOR);
+
+	public static class Downloader extends Operazione.Downloader<CodiceGestionaleUscite, Uscita, Downloader> {
+
+		public Downloader(int year, @NotNull Anagrafiche anagrafiche) {
+			super(year, anagrafiche, "SIOPE_USCITE", CREATOR);
+		}
+
+		@Override
+		protected Downloader me() {
+			return this;
+		}
 	}
 }

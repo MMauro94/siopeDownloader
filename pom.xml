@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.mmauro94</groupId>
     <artifactId>siopeDownloader</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
 
     <name>siope.it downloader</name>
     <description>Una libreria per scaricare i dati di siope.it</description>
@@ -79,19 +79,6 @@
                         <id>attach-javadocs</id>
                         <goals>
                             <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <!-- explicitly define maven-deploy-plugin after other to force exec order -->
-                <artifactId>maven-deploy-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>deploy</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
                         </goals>
                     </execution>
                 </executions>

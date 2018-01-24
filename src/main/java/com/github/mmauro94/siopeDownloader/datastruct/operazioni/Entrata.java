@@ -12,14 +12,23 @@ import java.math.BigDecimal;
 
 public final class Entrata extends Operazione<CodiceGestionaleEntrate> {
 
-	private Entrata(@NotNull Ente ente, int year, int month, @NotNull CodiceGestionaleEntrate codiceGestionale, @NotNull BigDecimal amount) {
+	private Entrata(@NotNull Ente ente, int year, int month, @NotNull CodiceGestionaleEntrate codiceGestionale, long amount) {
 		super(ente, year, month, codiceGestionale, amount);
 	}
 
 	private final static Operazione.Creator<CodiceGestionaleEntrate, Entrata> CREATOR = (Creator<CodiceGestionaleEntrate, Entrata>) (anagrafiche, ente, year, month, codiceGestionale, amount) -> new Entrata(ente, year, month, anagrafiche.getCodiciGestionaliEntrate().get(codiceGestionale), amount);
 
-	@NotNull
-	public static Iterable<Entrata> downloadEntrate(int year, @NotNull Anagrafiche anagrafiche, @Nullable OnProgressListener onProgressListener) throws IOException {
-		return download(year, anagrafiche, onProgressListener, "SIOPE_ENTRATE", CREATOR);
+
+	public static class Downloader extends Operazione.Downloader<CodiceGestionaleEntrate, Entrata, Downloader> {
+
+		public Downloader(int year, @NotNull Anagrafiche anagrafiche) {
+			super(year, anagrafiche, "SIOPE_ENTRATE", CREATOR);
+		}
+
+		@Override
+		protected Downloader me() {
+			return this;
+		}
 	}
+
 }
