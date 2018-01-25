@@ -1,5 +1,6 @@
 package com.github.mmauro94.siopeDownloader.datastruct.anagrafiche;
 
+import lombok.EqualsAndHashCode;
 import org.apache.commons.csv.CSVRecord;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -7,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Date;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 public class CodiceGestionaleEntrate extends CodiceGestionale {
 
 	public static class Map extends CodiceGestionale.Map<CodiceGestionaleEntrate> {

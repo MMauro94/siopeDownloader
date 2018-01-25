@@ -22,7 +22,7 @@ public class Test {
 
 		@Override
 		public void onProgress(float progress) {
-			System.out.println(PERCENT_FORMAT.format(progress));
+			//System.out.println(PERCENT_FORMAT.format(progress));
 			final long now = System.currentTimeMillis();
 			if (startTime == null) {
 				startTime = now;
