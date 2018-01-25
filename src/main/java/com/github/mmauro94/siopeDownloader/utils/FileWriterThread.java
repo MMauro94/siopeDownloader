@@ -64,8 +64,8 @@ public class FileWriterThread extends Thread {
 
 	@Override
 	public void run() {
-		status = Status.WRITING;
 		try (FileOutputStream fos = new FileOutputStream(file)) {
+			status = Status.WRITING;
 			final byte[] buffer = new byte[1024 * 1024]; //1MB
 			int r;
 			while ((r = inputStream.read(buffer)) > 0) {

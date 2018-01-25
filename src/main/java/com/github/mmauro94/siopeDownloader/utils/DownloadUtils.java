@@ -40,16 +40,16 @@ public final class DownloadUtils {
 	@NotNull
 	public static DownloadResult download(@NotNull URL url, @Nullable OnProgressListener progressListener) throws IOException {
 		final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-		final long length = urlConnection.getContentLengthLong();
-		Long objLength = length < 0 ? null : length;
+		final String lengthStr = urlConnection.getHeaderField("Content-Length");
+		final Long length = lengthStr == null ? null : Long.parseLong(lengthStr);
 		if (urlConnection.getResponseCode() == 200) {
 			final InputStream is;
 			if (progressListener != null) {
-				is = new InputStreamWithProgress(urlConnection.getInputStream(), progressListener, objLength);
+				is = new InputStreamWithProgress(urlConnection.getInputStream(), progressListener, length);
 			} else {
 				is = urlConnection.getInputStream();
 			}
-			return new DownloadResult(new BufferedInputStream(is), objLength);
+			return new DownloadResult(new BufferedInputStream(is), length);
 		} else {
 			throw new IOException("Response code: " + urlConnection.getResponseCode() + ", " + urlConnection.getResponseMessage());
 		}
