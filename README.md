@@ -18,9 +18,9 @@ Nel sito sono presenti entrate e uscite relative ad un certo ente in un certo me
 Per l'utilizzo della libreria in modo corretto è importante conoscere alcune classi.
 ### Classi interessanti
 #### `AutoMap<T>`
-Questa classe è una `Collection<T>` che racchiude una `Map<K, T>`. La chiave della mappa viene automaticamente gestita dalle varie implementazioni. Si possono quindi inserire valori senza specificare la chiave, ma rimane possibile ottenere un valore a partire dalla sua chiave. 
+Questa classe è una `Collection<T>` che racchiude una `Map<K, T>`. La chiave della mappa viene automaticamente gestita dalle varie implementazioni. Si possono quindi inserire valori senza specificare la chiave, rimanendo possibile ottenere un valore a partire dalla sua chiave. 
 #### `AbstractDownloader`
-Class che viene implementata dalle classi che permettono di scaricare dati. Ha tre metodi principali di nostro interesse:
+Classe che viene implementata dalle classi che permettono di scaricare dati. Ha tre metodi principali di nostro interesse:
 * `setOnProgressListener(OnProgressListener)`: permette di associare un listener di progresso
 * `download()`: scarica e parsa i dati sul thread corrente
 * `download(File)`: apre un nuovo thread in cui viene scaricato il contenuto su un file temporaneo specificato, mentre nel thread corrente il file viene letto e parsato parallelamente.
@@ -29,7 +29,7 @@ Come già detto, prima di scaricare i dati veri e propri, dobbiamo scaricare i d
 ```java
 Anagrafiche a = new Anagrafiche.Downloader().download();
 ```
-Siccome i dati non sono molti, non è necessario settare un listener di progresso o di parallelizare download e parsing.
+Siccome i dati non sono molti, non è necessario (anche se possibile) settare un listener di progresso o di parallelizare download e parsing.
 In questa classe si trovano tutte le informazioni anagrafiche presenti su siope.it.
 Ogni anagrafica contenuta è una `AutoMap`, che ha come chiave il suo codice, e come valore l'istanza della classe contenente le informazioni.
 
