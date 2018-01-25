@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 public final class Entrata extends Operazione<CodiceGestionaleEntrate> {
 
-	private Entrata(@NotNull Ente ente, int year, int month, @NotNull CodiceGestionaleEntrate codiceGestionale, long amount) {
+	public Entrata(@NotNull Ente ente, int year, int month, @NotNull CodiceGestionaleEntrate codiceGestionale, long amount) {
 		super(ente, year, month, codiceGestionale, amount);
 	}
 

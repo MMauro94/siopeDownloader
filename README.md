@@ -10,7 +10,7 @@ Nel sito sono presenti entrate e uscite relative ad un certo ente in un certo me
 <dependency>
   <groupId>com.github.mmauro94</groupId>
   <artifactId>siopeDownloader</artifactId>
-  <version>1.1.1</version>
+  <version>1.1.2</version>
 </dependency>
 ```
 

@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 
 public final class Uscita extends Operazione<CodiceGestionaleUscite> {
 
-	private Uscita(@NotNull Ente ente, int year, int month, @NotNull CodiceGestionaleUscite codiceGestionale, long amount) {
+	public Uscita(@NotNull Ente ente, int year, int month, @NotNull CodiceGestionaleUscite codiceGestionale, long amount) {
 		super(ente, year, month, codiceGestionale, amount);
 	}
 
